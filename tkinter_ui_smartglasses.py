@@ -7,10 +7,11 @@ from pynput import keyboard
 
 # Create the tkinter window
 root = Tk()
-root.state('zoomed')
+#root.state('zoomed')
+root.attributes('-fullscreen', True)
 
 def chrome():
-    os.system("start chrome https://www.youtube.com/watch?v=_U8NGd2awtI&t=251s")
+    os.system("kweb -KEJ 10.0.0.115:5000/video &")
     hide()
 
 def hide():
@@ -23,8 +24,12 @@ def hide():
 def show():
     global hidden
 
+    # KILL ALL PROCESSES
+    os.system("pkill kweb")
+
     root.deiconify()
-    root.state('zoomed')
+    #root.state('zoomed')
+    root.attributes('-fullscreen', True)
     hidden = False
     print("> show window")
 
@@ -43,7 +48,7 @@ for i in range(0, 2):
     root.columnconfigure(i, weight=1)
     root.rowconfigure(i, weight=1, )
 
-helv = tkFont.Font(family='Helvetica', size=80, weight='bold')
+helv = tkFont.Font(family='Helvetica', size=20, weight='bold')
 
 # Create button to hide
 button = Button(background="#BFC9CA", text="HIDE", font=helv, command=hide)
@@ -81,8 +86,10 @@ try:
                     print('Received event {}'.format(event))
                     print(event.key)
                     if event.key == event.key.ctrl_l:
+                        print("CTRL")
                         show()
 
 except Exception as e:
+    os.system("pkill kweb")
     print(f"CYA: {e}")
     
